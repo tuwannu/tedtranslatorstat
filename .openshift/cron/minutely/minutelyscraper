@@ -1,2 +1,2 @@
 #!/bin/bash
-date >> ./dailyscraper.log
+date >> ../../../log/minutelyscraper.log
