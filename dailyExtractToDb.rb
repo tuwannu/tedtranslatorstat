@@ -98,13 +98,13 @@ translators.each do |t|
 			`for_date`, 
 			`date_extracted`
 		) VALUES (
-			'" + t.ted_id + "', 
-			'" + t.profile_url + "', 
-			'" + t.name + "', 
-			'" + t.photo_url + "', 
-			'" + t.location + "', 
-			'" + t.languages + "', 
-			'" + t.translations + "', 
+			'#{t.ted_id}', 
+			'#{t.profile_url}', 
+			'#{t.name}', 
+			'#{t.photo_url}', 
+			'#{t.location}', 
+			'#{t.languages}', 
+			'#{t.translations}', 
 			NOW(), 
 			NOW()
 		);
