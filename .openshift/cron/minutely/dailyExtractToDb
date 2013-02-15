@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ruby ${OPENSHIFT_REPO_DIR}/dailyExtractToDb.rb
