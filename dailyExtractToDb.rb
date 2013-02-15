@@ -115,4 +115,4 @@ more_page = true
 
 # puts "#{Time.new}: " + translators.count + " records inserted."
 
-puts "#{Time.new}: Daily extract completed in #{Time.new-time} seconds."
+puts "#{Time.new}: Daily extract completed in #{Time.new-startTime} seconds."
