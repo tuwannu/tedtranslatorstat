@@ -86,33 +86,39 @@ client = Mysql2::Client.new(
 	)
 
 translators.each do |t|
-	client.query("
-		INSERT INTO dailyextracts (
-			`ted_id`, 
-			`profile_url`, 
-			`name`, 
-			`photo_url`, 
-			`location`, 
-			`languages`, 
-			`translations`, 
-			`for_date`, 
-			`date_extracted`
-		) VALUES (
-			'#{t.ted_id}', 
-			'#{t.profile_url}', 
-			'#{t.name}', 
-			'#{t.photo_url}', 
-			'#{t.location}', 
-			'#{t.languages}', 
-			'#{t.translations}', 
-			NOW(), 
-			NOW()
-		);
-	")
+	begin
+		client.query("
+			INSERT INTO dailyextracts (
+				`ted_id`, 
+				`profile_url`, 
+				`name`, 
+				`photo_url`, 
+				`location`, 
+				`languages`, 
+				`translations`, 
+				`for_date`, 
+				`date_extracted`
+			) VALUES (
+				'#{t.ted_id}', 
+				'#{t.profile_url}', 
+				'#{t.name}', 
+				'#{t.photo_url}', 
+				'#{t.location}', 
+				'#{t.languages}', 
+				'#{t.translations}', 
+				NOW(), 
+				NOW()
+			);
+		")
+	rescue Exception => e
+		puts "Error occurred while inserting ted_id: #{t.ted_id} (#{t.name})"
+		puts e.message
+		puts e.backtrace.inspect  
+	end
 end
 
 client.close()
 
-puts "#{Time.new}: " + translators.count + " records inserted."
+puts "#{Time.new}: #{translators.count} records inserted."
 
 puts "#{Time.new}: Daily extract completed in #{Time.new-startTime} seconds."
