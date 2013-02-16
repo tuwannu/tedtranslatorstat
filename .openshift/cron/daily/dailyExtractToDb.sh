@@ -1,3 +1,3 @@
 #!/bin/bash
 
-${OPENSHIFT_REPO_DIR}script/rails runner "${OPENSHIFT_REPO_DIR}dailyExtractToDb.rb"
+timeout 1000 ${OPENSHIFT_REPO_DIR}script/rails runner "${OPENSHIFT_REPO_DIR}dailyExtractToDb.rb"
