@@ -9,6 +9,7 @@ translators = []
 
 page = 1
 more_page = true
+scraping_success = true
 
 class Translator
 	attr_reader :ted_id
@@ -38,6 +39,7 @@ while more_page == true
 		rawhtml = open(URI.encode(url))
 	rescue
 		puts "Error while retrieving from #{url}"
+		scraping_success = false
 		break
 	end
 
