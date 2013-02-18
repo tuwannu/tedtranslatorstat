@@ -2,7 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'mysql2'
 
-startTime = Time.new
+startTime = Time.new.getlocal("+07:00")
 
 languages = []
 translators = []
@@ -123,4 +123,4 @@ client.close()
 
 puts "#{Time.new}: #{translators.count} records inserted."
 
-puts "#{Time.new}: Daily extract completed in #{Time.new-startTime} seconds."
+puts "#{Time.new}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds."
