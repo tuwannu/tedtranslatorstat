@@ -10,6 +10,7 @@ translators = []
 page = 1
 more_page = true
 scraping_success = true
+insert_success_count = 0
 
 log_text = "Script start executing at #{Time.new}\n"
 
@@ -37,7 +38,7 @@ while more_page == true
 	url = "http://www.ted.com/translate/translators/lang/th/page/#{page}"
 
 	begin
-		log_text << "Fetching: #{url}"
+		log_text << "Fetching: #{url}\n"
 		rawhtml = open(URI.encode(url))
 	rescue
 		log_text << "Error while retrieving from #{url}\n"
@@ -82,6 +83,8 @@ while more_page == true
 
 end
 
+log_text << "#{Time.new.getlocal("+07:00")}: #{translators.count} scraped from website.\n"
+
 client = Mysql2::Client.new(
 	:host => ENV['OPENSHIFT_MYSQL_DB_HOST'], 
 	:username => ENV['OPENSHIFT_MYSQL_DB_USERNAME'], 
@@ -114,21 +117,21 @@ translators.each do |t|
 				NOW()
 			);
 		")
+		insert_success_count++
 	rescue Exception => e
 		log_text << "Error occurred while inserting ted_id: #{t.ted_id} (#{t.name})\n"
 		log_text << e.message << "\n"
-		log_text << e.backtrace.inspect << "\n"
 	end
 end
 
 client.close()
 
-log_text << "#{Time.new}: #{translators.count} records inserted.\n"
-log_text << "#{Time.new}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
+log_text << "#{Time.new.getlocal("+07:00")}: #{insert_success_count} records inserted.\n"
+log_text << "#{Time.new.getlocal("+07:00")}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
 log_text << "----------------------------------\n\n"
 
 begin
 	File.open(ENV['OPENSHIFT_REPO_DIR'] + "log/dailyExtractToDb.rb.log", 'a') {|f| f.write(log_text) }
 rescue
-	puts "Error logging to file at ."
+	puts "Error logging to file."
 end
