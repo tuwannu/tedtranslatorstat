@@ -131,7 +131,7 @@ log_text << "#{Time.new.getlocal("+07:00")}: Daily extract completed in #{Time.n
 log_text << "----------------------------------\n\n"
 
 begin
-	File.open(ENV['OPENSHIFT_REPO_DIR'] + "log/dailyExtractToDb.rb.log", 'a') {|f| f.write(log_text) }
+	File.open(ENV['OPENSHIFT_REPO_DIR'] + "custom_log/dailyExtractToDb.rb.log", 'a') {|f| f.write(log_text) }
 rescue
 	puts "Error logging to file."
 end
