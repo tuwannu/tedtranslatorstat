@@ -11,6 +11,8 @@ page = 1
 more_page = true
 scraping_success = true
 
+log_text = "Script start executing at #{Time.new}\n"
+
 class Translator
 	attr_reader :ted_id
 	attr_reader :name
@@ -35,10 +37,10 @@ while more_page == true
 	url = "http://www.ted.com/translate/translators/lang/th/page/#{page}"
 
 	begin
-		puts "Fetching: #{url}"
+		log_text << "Fetching: #{url}"
 		rawhtml = open(URI.encode(url))
 	rescue
-		puts "Error while retrieving from #{url}"
+		log_text << "Error while retrieving from #{url}\n"
 		scraping_success = false
 		break
 	end
@@ -113,14 +115,20 @@ translators.each do |t|
 			);
 		")
 	rescue Exception => e
-		puts "Error occurred while inserting ted_id: #{t.ted_id} (#{t.name})"
-		puts e.message
-		puts e.backtrace.inspect  
+		log_text << "Error occurred while inserting ted_id: #{t.ted_id} (#{t.name})\n"
+		log_text << e.message << "\n"
+		log_text << e.backtrace.inspect << "\n"
 	end
 end
 
 client.close()
 
-puts "#{Time.new}: #{translators.count} records inserted."
+log_text << "#{Time.new}: #{translators.count} records inserted.\n"
+log_text << "#{Time.new}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
+log_text << "----------------------------------\n\n"
 
-puts "#{Time.new}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds."
+begin
+	File.open(ENV['OPENSHIFT_REPO_DIR'] + "log/dailyExtractToDb.rb.log", 'a') {|f| f.write(log_text) }
+rescue
+	puts "Error logging to file at ."
+end
