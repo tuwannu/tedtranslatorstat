@@ -116,7 +116,7 @@ translators.each do |t|
 			NOW()
 		);
 	")
-	insert_success_count++
+	insert_success_count += 1
 end
 
 client.close()
