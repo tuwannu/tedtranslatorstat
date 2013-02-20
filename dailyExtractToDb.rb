@@ -12,7 +12,7 @@ more_page = true
 scraping_success = true
 insert_success_count = 0
 
-log_text = "Script start executing at #{Time.new}\n"
+log_text = "Script start executing at #{startTime}\n"
 
 class Translator
 	attr_reader :ted_id
