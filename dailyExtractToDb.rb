@@ -93,35 +93,30 @@ client = Mysql2::Client.new(
 	)
 
 translators.each do |t|
-	begin
-		client.query("
-			INSERT INTO dailyextracts (
-				`ted_id`, 
-				`profile_url`, 
-				`name`, 
-				`photo_url`, 
-				`location`, 
-				`languages`, 
-				`translations`, 
-				`for_date`, 
-				`date_extracted`
-			) VALUES (
-				'#{t.ted_id}', 
-				'#{t.profile_url}', 
-				'#{t.name}', 
-				'#{t.photo_url}', 
-				'#{t.location}', 
-				'#{t.languages}', 
-				'#{t.translations}', 
-				NOW(), 
-				NOW()
-			);
-		")
-		insert_success_count++
-	rescue Exception => e
-		log_text << "Error occurred while inserting ted_id: #{t.ted_id} (#{t.name})\n"
-		log_text << e.message << "\n"
-	end
+	client.query("
+		INSERT INTO dailyextracts (
+			`ted_id`, 
+			`profile_url`, 
+			`name`, 
+			`photo_url`, 
+			`location`, 
+			`languages`, 
+			`translations`, 
+			`for_date`, 
+			`date_extracted`
+		) VALUES (
+			'#{t.ted_id}', 
+			'#{t.profile_url}', 
+			'#{t.name}', 
+			'#{t.photo_url}', 
+			'#{t.location}', 
+			'#{t.languages}', 
+			'#{t.translations}', 
+			NOW(), 
+			NOW()
+		);
+	")
+	insert_success_count++
 end
 
 client.close()
