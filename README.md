@@ -4,7 +4,9 @@ Project by [Unnawut Leepaisalsuwanna](http://www.unnawut.in.th "Unnawut Leepaisa
 
 ## Current Features ##
 
-1. Scrape TED Translator statistics from TED.com (currently only Thai translators to avoid overloading TED.com)
+1. Scrape TED Translator statistics from TED.com on daily basis (currently only Thai translators to avoid overloading TED.com)
+    1. List of translators
+    1. Number of completed translations/reviews of each translator in each day
 
 ## Target Features ##
 
