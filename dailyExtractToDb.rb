@@ -94,7 +94,7 @@ client = Mysql2::Client.new(
 
 translators.each do |t|
 	client.query("
-		INSERT INTO dailyextracts (
+		INSERT INTO daily_extracts (
 			`ted_id`, 
 			`profile_url`, 
 			`name`, 
