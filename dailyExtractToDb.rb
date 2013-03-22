@@ -7,7 +7,6 @@ startTime = Time.new.getlocal("+07:00")
 scrape_languages = ['th', 'vi']
 
 # languages = []
-translators = []
 
 log_text = "Script start executing at #{startTime}\n"
 
@@ -39,6 +38,7 @@ scrape_languages.each do |scrape_language|
 	page = 1
 	more_page = true
 	scraping_success = true
+	translators = []
 
 	while (more_page == true && scraping_success != false)
 		url = "http://www.ted.com/translate/translators/lang/#{scrape_language}/page/#{page}"
