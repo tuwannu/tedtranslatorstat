@@ -4,7 +4,7 @@ require 'mysql2'
 
 startTime = Time.new.getlocal("+07:00")
 
-scrape_languages = ['th', 'vi']
+scrape_languages = ['th', 'sv', 'vi']
 
 # languages = []
 
