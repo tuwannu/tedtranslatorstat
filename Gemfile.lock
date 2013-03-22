@@ -57,6 +57,8 @@ GEM
     mysql2 (0.3.11)
     nokogiri (1.5.6)
     polyglot (0.3.3)
+    rabl (0.8.0)
+      activesupport (>= 2.3.14)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -112,6 +114,7 @@ DEPENDENCIES
   minitest
   mysql2
   nokogiri
+  rabl
   rails (= 3.2.11)
   sass-rails (~> 3.2.3)
   sqlite3
