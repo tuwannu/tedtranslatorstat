@@ -33,7 +33,7 @@ class Translator
 end
 
 scrape_languages.each do |scrape_language|
-	log_text << "Start scraping for language: #{scrape_language}\n"
+	log_text << "#{Time.new.getlocal("+07:00")}: Start scraping for language: #{scrape_language}\n"
 
 	page = 1
 	more_page = true
@@ -44,10 +44,10 @@ scrape_languages.each do |scrape_language|
 		url = "http://www.ted.com/translate/translators/lang/#{scrape_language}/page/#{page}"
 
 		begin
-			log_text << "Fetching: #{url}\n"
+			log_text << "#{Time.new.getlocal("+07:00")}: Fetching: #{url}\n"
 			rawhtml = open(URI.encode(url))
 		rescue
-			log_text << "Error while retrieving from #{url}\n"
+			log_text << "#{Time.new.getlocal("+07:00")}: Error while retrieving from #{url}\n"
 			scraping_success = false
 			break
 		end
@@ -89,7 +89,7 @@ scrape_languages.each do |scrape_language|
 				page += 1
 			end
 		rescue
-			log_text << "Error while parsing from #{url}\n"
+			log_text << "#{Time.new.getlocal("+07:00")}: Error while parsing from #{url}\n"
 			scraping_success = false
 			break
 		end
@@ -141,17 +141,18 @@ scrape_languages.each do |scrape_language|
 		client.close()
 
 		log_text << "#{Time.new.getlocal("+07:00")}: #{insert_success_count} records inserted.\n"
-		log_text << "#{Time.new.getlocal("+07:00")}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
 		log_text << "----------------------------------\n\n"
-	end
-
-	begin
-		File.open(ENV['OPENSHIFT_REPO_DIR'] + "custom_log/dailyExtractToDb.rb.log", 'a') {|f| f.write(log_text) }
-	rescue
-		puts "Error logging to file."
 	end
 
 	# Rest for 15 seconds before scraping the next language
 	sleep 15
 
+end
+
+log_text << "#{Time.new.getlocal("+07:00")}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
+
+begin
+	File.open(ENV['OPENSHIFT_REPO_DIR'] + "custom_log/dailyExtractToDb.rb.log", 'a') {|f| f.write(log_text) }
+rescue
+	puts "Error logging to file."
 end
