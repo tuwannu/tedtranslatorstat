@@ -1,0 +1,29 @@
+<% content_for :head do %>
+  <%= tag :meta, :name => "language", :content => params[:language] %>
+  <%= tag :meta, :name => "ted_id", :content => params[:ted_id] %>
+  <%= tag :meta, :name => "first_scrape_date", :content => @firstScrapeDate.strftime('Last task completion on: %e %B %Y') %>  
+<% end %>
+
+<h1>Statistics for TED Language Coordinators</h1>
+<h2><%= @translatorProfile.name %> (<%= params[:language] %>)</h2>
+
+<div id="badge-shelf">
+
+  <div class="number-badge">
+    <h3>Total<br />Tasks Completed</h3>
+    <p><%= @translatorProfile.translations %></p>
+  </div>
+
+  <div class="number-badge">
+    <h3>Percentage of<br /> Language's Tasks</h3>
+    <p><%= number_to_percentage(@translatorProfile.translations.to_f / @totalCompletedTasksInLanguage * 100, :precision => 2) %></p>
+  </div>
+
+  <div class="number-badge">
+    <h3>Last Active Date</h3>
+    <p id="how-long-ago"><%= time_ago_in_words(@lastActiveDate) %> ago</p>
+  </div>
+
+</div>
+
+<div class="graph-wrapper"></div>

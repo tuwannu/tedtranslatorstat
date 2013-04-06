@@ -3,6 +3,8 @@ RailsApp::Application.routes.draw do
   match 'translations' => 'translations#index'
   match 'translations/total/:language(/:duration)' => 'translations#total'
   match 'translations/language/:language' => 'translations#language'
+  match 'translations/translator_history/:language/:ted_id' => 'translations#translator_history' 
+  match 'translations/translator/:language/:ted_id' => 'translations#translator', :as => :view_translator 
 
   # root :to => "translations#index"
 

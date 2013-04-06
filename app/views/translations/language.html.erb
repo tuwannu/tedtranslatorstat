@@ -13,6 +13,11 @@
   </div>
 
   <div class="number-badge-new">
+    <h3>Active<br />Translators*</h3>
+    <p><%= @activeTranslators %></p>
+  </div>
+
+  <div class="number-badge-new">
     <h3>New<br />Completed Tasks*</h3>
     <p><%= @newCompletedTasks %></p>
   </div>
@@ -28,34 +33,143 @@
   </div>
 
   <p class="badge-note">
-    * New translators: translators that completed their 1<sup>st</sup> task in the past 2 Sundays<br />
-    * New completed tasks: tasks that were completed in the past 2 Sundays
+    * Based on activities within the past 2 Sundays
   </p>
 </div>
 
 <div id="<%= params[:language] %>" class="graph-wrapper"></div>
 
-<table>
-  <tr class="tablerow-header">
-    <td>#</td>
-    <td>Name</td>
-    <td>Tasks Completed<br />(Translations + Reviews)</td>
-    <td>Location</td>
-    <td>First Scrape Date</td>
-  </tr>
-  <% @translators.each_with_index do |translator, i| %>
-  <tr class="<%= cycle("tablerow-odd", "tablerow-even") %>">
-    <td style="text-align: center;"><%= i + 1 %></td>
-    <td><%= link_to(translator.name, "http://www.ted.com" + translator.profile_url + "/translations") %></td>
-    <td style="text-align: center;"><%= translator.translations %></td>
-    <td><%= translator.location.presence || '(not available)' %></td>
-    <td>
-      <%= translator.firstScrapeDate.strftime('%m/%d/%y') %> 
-      <% if((Date.today - translator.firstScrapeDate).to_i < 13) then %>
-        <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
-      <% else %> 
-        <span style="color: #ddd;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
-        <% end %></td>
-  </tr>
-  <% end %>
-</table>
+<ul class="nav nav-tabs" id="myTab">
+  <li class="active"><a href="#mostTasks">Most Completed Tasks</a></li>
+  <li><a href="#lastActive">Last Active</a></li>
+  <li><a href="#lastScraped">Last Scraped</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="mostTasks">
+    <table class="table table-hover table-striped table-condensed">
+      <thead>
+        <tr class="tablerow-header">
+          <td>#</td>
+          <td>Name</td>
+          <td>Tasks Completed<br />(Translations + Reviews)</td>
+          <td>Location</td>
+          <td>Last Active Date</td>
+          <td>First Scrape Date<br />(New joiners?)</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @translators.each_with_index do |translator, i| %>
+        <tr>
+          <td style="text-align: center;"><%= i + 1 %></td>
+          <td>
+            <%= link_to(translator.name, view_translator_path(:language => params[:language], :ted_id => translator.ted_id)) %> 
+            <sup><%= link_to("[TED]", "http://www.ted.com" + translator.profile_url + "/translations", { :class => "tedlink" }) %></sup></td>
+          <td style="text-align: center;"><%= translator.translations %></td>
+          <td><%= translator.location.presence || '(not available)' %></td>
+          <td>
+            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
+            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
+            <% end %>
+          </td>
+          <td>
+            <%= translator.firstScrapeDate.strftime('%d/%m/%y') %> 
+            <% if((Date.today - translator.firstScrapeDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane" id="lastActive">
+    <table class="table table-hover table-striped table-condensed">
+      <thead>
+        <tr class="tablerow-header">
+          <td>#</td>
+          <td>Name</td>
+          <td>Tasks Completed<br />(Translations + Reviews)</td>
+          <td>Location</td>
+          <td>Last Active Date</td>
+          <td>First Scrape Date<br />(New joiners?)</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @translators.sort_by(&:lastActiveDate).reverse.each_with_index do |translator, i| %>
+        <tr>
+          <td style="text-align: center;"><%= i + 1 %></td>
+          <td>
+            <%= link_to(translator.name, view_translator_path(:language => params[:language], :ted_id => translator.ted_id)) %> 
+            <sup><%= link_to("[TED]", "http://www.ted.com" + translator.profile_url + "/translations", { :class => "tedlink" }) %></sup></td>
+          <td style="text-align: center;"><%= translator.translations %></td>
+          <td><%= translator.location.presence || '(not available)' %></td>
+          <td>
+            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
+            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
+            <% end %>
+          </td>
+          <td>
+            <%= translator.firstScrapeDate.strftime('%d/%m/%y') %> 
+            <% if((Date.today - translator.firstScrapeDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="tab-pane" id="lastScraped">
+    <table class="table table-hover table-striped table-condensed">
+      <thead>
+        <tr class="tablerow-header">
+          <td>#</td>
+          <td>Name</td>
+          <td>Tasks Completed<br />(Translations + Reviews)</td>
+          <td>Location</td>
+          <td>Last Active Date</td>
+          <td>First Scrape Date<br />(New joiners?)</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @translators.sort_by(&:firstScrapeDate).reverse.each_with_index do |translator, i| %>
+        <tr>
+          <td style="text-align: center;"><%= i + 1 %></td>
+          <td>
+            <%= link_to(translator.name, view_translator_path(:language => params[:language], :ted_id => translator.ted_id)) %> 
+            <sup><%= link_to("[TED]", "http://www.ted.com" + translator.profile_url + "/translations", { :class => "tedlink" }) %></sup></td>
+          <td style="text-align: center;"><%= translator.translations %></td>
+          <td><%= translator.location.presence || '(not available)' %></td>
+          <td>
+            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
+            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
+            <% end %>
+          </td>
+          <td>
+            <%= translator.firstScrapeDate.strftime('%d/%m/%y') %> 
+            <% if((Date.today - translator.firstScrapeDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

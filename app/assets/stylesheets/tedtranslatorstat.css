@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
   font-size: 10pt;
   padding: 20px;
-  width: 750px;
+  width: 1024px;
 }
 
 h1 {
@@ -39,11 +39,16 @@ a {
   text-decoration: none;
 }
 
-tr.tablerow-header {
+table {
+  width: 100%;
+}
+
+tr.tablerow-header td {
   font-size: 8pt;
   color: #fff;
   background-color: #49708A;
   text-align: center;
+  vertical-align: bottom;
 }
 
 tr.tablerow-header td {
@@ -54,12 +59,13 @@ tr.tablerow-odd td , tr.tablerow-even td {
   padding: 0.5ex 0;
 }
 
-tr.tablerow-odd {
-  background-color: #EBF7F8;
+td span.time-ago {
+  margin-left: 5px;
 }
 
-tr.tablerow-even {
-
+a.tedlink {
+  font-size: 6pt;
+  color: #ccc;
 }
 
 div#badge-shelf {
@@ -76,10 +82,10 @@ div.number-badge, div.number-badge-new {
   color: #fff;
   text-shadow: rgba(0, 0, 0, 0.247059) 1px 1px 1px;
 
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 div.number-badge-new {
@@ -87,7 +93,7 @@ div.number-badge-new {
 }
 
 div.number-badge h3, div.number-badge-new h3 {
-  font-size: 8pt;
+  font-size: 9pt;
   margin: 0;
   font-weight: normal;
   line-height: 14px;
@@ -99,13 +105,17 @@ div.number-badge p, div.number-badge-new p {
   font-size: 24pt;
 }
 
+p#how-long-ago {
+  cursor: default;
+}
+
 p.badge-note {
   font-size: 8pt;
   color: #ccc;
 }
 
-span.time-ago {
-  margin-left: 5px;
+div#warning-inaccuracy {
+  margin-top: 50px;
 }
 
 .axis path,
