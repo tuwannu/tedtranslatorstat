@@ -40,13 +40,13 @@
 <div id="<%= params[:language] %>" class="graph-wrapper"></div>
 
 <ul class="nav nav-tabs" id="myTab">
-  <li class="active"><a href="#mostTasks">Most Completed Tasks</a></li>
-  <li><a href="#lastActive">Last Active</a></li>
-  <li><a href="#lastScraped">Last Scraped</a></li>
+  <li class="active"><a href="#firstScraped">First Scraped (New Joiners)</a></li>
+  <li><a href="#lastActive">Recently Active</a></li>
+  <li><a href="#mostTasks">Most Completed Tasks</a></li>
 </ul>
 
 <div class="tab-content">
-  <div class="tab-pane active" id="mostTasks">
+  <div class="tab-pane" id="mostTasks">
     <table class="table table-hover table-striped table-condensed">
       <thead>
         <tr class="tablerow-header">
@@ -54,8 +54,8 @@
           <td>Name</td>
           <td>Tasks Completed<br />(Translations + Reviews)</td>
           <td>Location</td>
-          <td>Last Active Date</td>
           <td>First Scrape Date<br />(New joiners?)</td>
+          <td>Last Active Date</td>
         </tr>
       </thead>
       <tbody>
@@ -68,19 +68,19 @@
           <td style="text-align: center;"><%= translator.translations %></td>
           <td><%= translator.location.presence || '(not available)' %></td>
           <td>
-            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
-            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
-              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
-            <% else %> 
-              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
-            <% end %>
-          </td>
-          <td>
             <%= translator.firstScrapeDate.strftime('%d/%m/%y') %> 
             <% if((Date.today - translator.firstScrapeDate).to_i < 14) then %>
               <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
             <% else %> 
               <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
+            <% end %>
+          </td>
+          <td>
+            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
+            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
             <% end %>
           </td>
         </tr>
@@ -96,8 +96,8 @@
           <td>Name</td>
           <td>Tasks Completed<br />(Translations + Reviews)</td>
           <td>Location</td>
-          <td>Last Active Date</td>
           <td>First Scrape Date<br />(New joiners?)</td>
+          <td>Last Active Date</td>
         </tr>
       </thead>
       <tbody>
@@ -110,14 +110,6 @@
           <td style="text-align: center;"><%= translator.translations %></td>
           <td><%= translator.location.presence || '(not available)' %></td>
           <td>
-            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
-            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
-              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
-            <% else %> 
-              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
-            <% end %>
-          </td>
-          <td>
             <%= translator.firstScrapeDate.strftime('%d/%m/%y') %> 
             <% if((Date.today - translator.firstScrapeDate).to_i < 14) then %>
               <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
@@ -125,12 +117,20 @@
               <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
             <% end %>
           </td>
+          <td>
+            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
+            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </tbody>
     </table>
   </div>
-  <div class="tab-pane" id="lastScraped">
+  <div class="tab-pane active" id="firstScraped">
     <table class="table table-hover table-striped table-condensed">
       <thead>
         <tr class="tablerow-header">
@@ -138,8 +138,8 @@
           <td>Name</td>
           <td>Tasks Completed<br />(Translations + Reviews)</td>
           <td>Location</td>
-          <td>Last Active Date</td>
           <td>First Scrape Date<br />(New joiners?)</td>
+          <td>Last Active Date</td>
         </tr>
       </thead>
       <tbody>
@@ -152,19 +152,19 @@
           <td style="text-align: center;"><%= translator.translations %></td>
           <td><%= translator.location.presence || '(not available)' %></td>
           <td>
-            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
-            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
-              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
-            <% else %> 
-              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
-            <% end %>
-          </td>
-          <td>
             <%= translator.firstScrapeDate.strftime('%d/%m/%y') %> 
             <% if((Date.today - translator.firstScrapeDate).to_i < 14) then %>
               <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
             <% else %> 
               <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
+            <% end %>
+          </td>
+          <td>
+            <%= translator.lastActiveDate.strftime('%d/%m/%y') %>
+            <% if((Date.today - translator.lastActiveDate).to_i < 14) then %>
+              <span class="time-ago label label-important"><%= time_ago_in_words(translator.lastActiveDate) %> ago</span>
+            <% else %> 
+              <span style="color: #aaa; font-size: 8pt;">(<%= time_ago_in_words(translator.lastActiveDate) %> ago)</span>
             <% end %>
           </td>
         </tr>
