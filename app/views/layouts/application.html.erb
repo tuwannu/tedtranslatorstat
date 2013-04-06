@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>RailsApp</title>
+  <title>OTP Statistics</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <%= yield(:head) %>
 </head>
-<body>
+<body id="<%= controller_name %>-<%= action_name %>">
 
 <%= yield %>
 

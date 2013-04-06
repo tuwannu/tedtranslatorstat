@@ -1,0 +1,26 @@
+
+
+<h1>Statistics for TED Language Coordinators</h1>
+<h2>Available languages</h2>
+
+<table>
+  <tr>
+    <td><h2 class="header-language">Thai</h2></td>
+    <td><h2 class="header-language">Swedish</h2></td>
+    <td><h2 class="header-language">Dutch</h2></td>
+  </tr>
+  <tr>
+    <td>
+      <div id="th" class="graph-wrapper"></div>
+      <p class="links-drilldown"><%= link_to("Drill Down", url_for(:action => 'language', :language => "th")) %></p>
+    </td>
+    <td>
+      <div id="sv" class="graph-wrapper"></div>
+      <p class="links-drilldown"><%= link_to("Drill Down", url_for(:action => 'language', :language => "sv")) %></p>
+    </td>
+    <td>
+      <div id="nl" class="graph-wrapper"></div>
+      <p class="links-drilldown"><%= link_to("Drill Down", url_for(:action => 'language', :language => "nl")) %></p>
+    </td>
+  </tr>
+</table>

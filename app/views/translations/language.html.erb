@@ -1,0 +1,61 @@
+<% content_for :head do %>
+  <%= tag :meta, :name => "language", :content => params[:language] %>
+<% end %>
+
+<h1>Statistics for TED Language Coordinators</h1>
+<h2>Language: <%= params[:language] %></h2>
+
+<div id="badge-shelf">
+
+  <div class="number-badge-new">
+    <h3>New<br />Translators*</h3>
+    <p><%= @newTranslators %></p>
+  </div>
+
+  <div class="number-badge-new">
+    <h3>New<br />Completed Tasks*</h3>
+    <p><%= @newCompletedTasks %></p>
+  </div>
+
+  <div class="number-badge">
+    <h3>Total<br />Translators</h3>
+    <p><%= @totalTranslators.translators %></p>
+  </div>
+
+  <div class="number-badge">
+    <h3>Total Tasks<br />Compelted</h3>
+    <p><%= @totalTasksCompleted.tasks.to_i %></p>
+  </div>
+
+  <p class="badge-note">
+    * New translators: translators that completed their 1<sup>st</sup> task in the past 2 Sundays<br />
+    * New completed tasks: tasks that were completed in the past 2 Sundays
+  </p>
+</div>
+
+<div id="<%= params[:language] %>" class="graph-wrapper"></div>
+
+<table>
+  <tr class="tablerow-header">
+    <td>#</td>
+    <td>Name</td>
+    <td>Tasks Completed<br />(Translations + Reviews)</td>
+    <td>Location</td>
+    <td>First Scrape Date</td>
+  </tr>
+  <% @translators.each_with_index do |translator, i| %>
+  <tr class="<%= cycle("tablerow-odd", "tablerow-even") %>">
+    <td style="text-align: center;"><%= i + 1 %></td>
+    <td><%= link_to(translator.name, "http://www.ted.com" + translator.profile_url + "/translations") %></td>
+    <td style="text-align: center;"><%= translator.translations %></td>
+    <td><%= translator.location.presence || '(not available)' %></td>
+    <td>
+      <%= translator.firstScrapeDate.strftime('%m/%d/%y') %> 
+      <% if((Date.today - translator.firstScrapeDate).to_i < 13) then %>
+        <span class="time-ago label label-important"><%= time_ago_in_words(translator.firstScrapeDate) %> ago</span>
+      <% else %> 
+        <span style="color: #ddd;">(<%= time_ago_in_words(translator.firstScrapeDate) %> ago)</span>
+        <% end %></td>
+  </tr>
+  <% end %>
+</table>

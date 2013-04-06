@@ -1,4 +1,11 @@
 RailsApp::Application.routes.draw do
+
+  match 'translations' => 'translations#index'
+  match 'translations/total/:language(/:duration)' => 'translations#total'
+  match 'translations/language/:language' => 'translations#language'
+
+  # root :to => "translations#index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

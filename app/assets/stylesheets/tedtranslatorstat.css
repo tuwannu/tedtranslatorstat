@@ -1,0 +1,126 @@
+body {
+  font-family: sans-serif;
+  font-size: 10pt;
+  padding: 20px;
+  width: 750px;
+}
+
+h1 {
+  font-size: 22pt;
+	margin-bottom: 0;
+}
+
+h2 {
+  font-size: 16pt;
+	margin-top: 0;
+}
+
+.header-language {
+	font-size: 12pt;
+  	text-align: center;
+  	margin-bottom: 0;
+}
+
+div.graph-wrapper {
+  font: 10px sans-serif;
+  text-align: center;
+}
+
+p {
+  margin: 0;
+}
+
+p.links-drilldown {
+  text-align: center;
+}
+
+a {
+  font-size: 10pt;
+  text-decoration: none;
+}
+
+tr.tablerow-header {
+  font-size: 8pt;
+  color: #fff;
+  background-color: #49708A;
+  text-align: center;
+}
+
+tr.tablerow-header td {
+  padding: 3px 20px;
+}
+
+tr.tablerow-odd td , tr.tablerow-even td {
+  padding: 0.5ex 0;
+}
+
+tr.tablerow-odd {
+  background-color: #EBF7F8;
+}
+
+tr.tablerow-even {
+
+}
+
+div#badge-shelf {
+  text-align: center;
+}
+
+div.number-badge, div.number-badge-new {
+  display: inline-block;
+  margin: 0 10px;
+  padding: 17px 20px;
+
+  text-align: center;
+  background-color: #08c;
+  color: #fff;
+  text-shadow: rgba(0, 0, 0, 0.247059) 1px 1px 1px;
+
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+div.number-badge-new {
+  background-color: #0c8;
+}
+
+div.number-badge h3, div.number-badge-new h3 {
+  font-size: 8pt;
+  margin: 0;
+  font-weight: normal;
+  line-height: 14px;
+}
+
+div.number-badge p, div.number-badge-new p {
+  margin: 12px 0 0 0;
+  font-weight: bold;
+  font-size: 24pt;
+}
+
+p.badge-note {
+  font-size: 8pt;
+  color: #ccc;
+}
+
+span.time-ago {
+  margin-left: 5px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.area {
+  fill: steelblue;
+}

@@ -1,0 +1,102 @@
+// TED Translator Stat scripts
+// By Unnawut Leepaisalsuwanna (unnawut@unnawut.in.th)
+
+$(function() {
+
+  var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+  var drawGraph = function(sourceUrl, targetDomSelector, inputWidth, inputHeight, inputMargin) {
+
+    var margin = {top: inputMargin, right: inputMargin, bottom: inputMargin, left: inputMargin+20},
+          width = inputWidth - margin.left - margin.right,
+          height = inputHeight - margin.top - margin.bottom;
+
+    var x = d3.time.scale()
+        .range([0, width]);
+
+    var y = d3.scale.linear()
+        .range([height, 0]);
+
+    d3.json(sourceUrl, function(error, data) {
+      data.forEach(function(d) {
+        d.date = parseDate(d.for_date);
+        d.close = +d.translations;
+      });
+
+      data = data.filter(function(d) {
+        if( parseDate(d.for_date).getDay() == 0 ) return true;
+        else return false;
+      });
+
+      x.domain(d3.extent(data, function(d) { return d.date; }));
+      y.domain(d3.extent(data, function(d) { return d.close; }));
+
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom");
+
+      if(x.domain()[1].getMonth() == x.domain()[0].getMonth()) {
+        xAxis.ticks(d3.time.weeks, 1);
+      } else {
+        xAxis.tickFormat(d3.time.format("%b"))
+            .ticks(d3.time.months, 1);
+      }
+
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left");
+
+      var line = d3.svg.line()
+          .x(function(d) { return x(d.date); })
+          .y(function(d) { return y(d.close); });
+
+      var area = d3.svg.area()
+          .x(function(d) { return x(d.date); })
+          .y0(height)
+          .y1(function(d) { return y(d.close); });
+
+      var svg = d3.select(targetDomSelector).append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+        .append("text")
+          // .attr("transform", "rotate(-90)")
+          .attr("y", -10)
+          .style("text-anchor", "middle")
+          .text("# Completed Tasks");
+
+      svg.append("path")
+          .datum(data)
+          .attr("class", "line")
+          .attr("d", line);
+
+      // svg.append("path")
+      //     .datum(data)
+      //     .attr("class", "area")
+      //     .attr("d", area);
+    });
+  }
+
+  if( $("body#translations-index").length ) {
+
+    console.log("test");
+    drawGraph("/translations/total/th.json", "div#th", 360, 200, 30);
+    drawGraph("/translations/total/nl.json", "div#nl", 360, 200, 30);
+    drawGraph("/translations/total/sv.json", "div#sv", 360, 200, 30);
+
+  } else if( $("body#translations-language").length ) {
+
+    drawGraph("/translations/total/" + $('meta[name="language"]').attr('content') + ".json", "div#" + $('meta[name="language"]').attr('content'), 700, 300, 30);
+
+  }
+});
