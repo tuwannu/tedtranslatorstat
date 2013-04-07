@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <%= tag :meta, :name => "language", :content => params[:language] %>
   <%= tag :meta, :name => "ted_id", :content => params[:ted_id] %>
-  <%= tag :meta, :name => "first_scrape_date", :content => @firstScrapeDate.strftime('Last task completion on: %e %B %Y') %>  
+  <%= tag :meta, :name => "last_active_date", :content => @lastActiveDate.strftime('Last task completion on: %e %B %Y') %>  
 <% end %>
 
 <h1>Statistics for TED Language Coordinators</h1>

@@ -189,7 +189,7 @@ $(function() {
 
     drawTranslatorHistoryGraph("/translations/translator_history/" + $('meta[name="language"]').attr('content') + "/" + $('meta[name="ted_id"]').attr('content') + ".json", "div.graph-wrapper", 700, 300, 30);
 
-    $('p#how-long-ago').tooltip({title: $('meta[name="first_scrape_date"]').attr('content'), placement: "bottom", delay: {show: 200, hide: 200}});
+    $('p#how-long-ago').tooltip({title: $('meta[name="last_active_date"]').attr('content'), placement: "bottom", delay: {show: 200, hide: 200}});
 
   }
 
