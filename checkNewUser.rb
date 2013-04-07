@@ -3,9 +3,9 @@ require 'nokogiri'
 
 startTime = Time.new.getlocal("+07:00")
 
-scrape_languages = ['th', 'pl', 'fr', 'ur', 'nl']
-language_co_emails = ['removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com']
-language_name = ['Thai', 'Polish', 'French', 'Urdu', 'Dutch']
+scrape_languages = ['th', 'pl', 'fr', 'ur', 'nl', 'ru']
+language_co_emails = ['removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com']
+language_name = ['Thai', 'Polish', 'French', 'Urdu', 'Dutch', 'Russian']
 
 log_text = "Script start executing at #{startTime}\n"
 
