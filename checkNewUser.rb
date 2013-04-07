@@ -3,9 +3,9 @@ require 'nokogiri'
 
 startTime = Time.new.getlocal("+07:00")
 
-scrape_languages = ['th', 'pl', 'fr', 'ur', 'nl', 'ru']
-language_co_emails = ['removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com']
-language_name = ['Thai', 'Polish', 'French', 'Urdu', 'Dutch', 'Russian']
+scrape_languages = ['th', 'pl', 'fr', 'ur', 'nl', 'ru', 'lv']
+language_co_emails = ['removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com']
+language_name = ['Thai', 'Polish', 'French', 'Urdu', 'Dutch', 'Russian', 'Latvian']
 
 log_text = "Script start executing at #{startTime}\n"
 
@@ -82,7 +82,7 @@ scrape_languages.each do |scrape_language|
 		log_text << "#{Time.new.getlocal("+07:00")}: Last translator is now: #{lastTranslator.amara_id} on page #{lastTranslator.last_page}\n"
 	end
 
-	sleep 5
+	sleep 2
 
 end
 
