@@ -70,7 +70,7 @@ scrape_languages.each do |scrape_language|
 
 	if newTranslators.length > 0 then
 		log_text << "Sending email to #{language_co_emails[scrape_languages.index(scrape_language)]} for language #{scrape_language}.\n"
-		LanguageCoMailer.new_translators_email(scrape_language, language_co_emails[scrape_languages.index(scrape_language)], newTranslators)
+		LanguageCoMailer.new_translators_email(scrape_language, language_co_emails[scrape_languages.index(scrape_language)], newTranslators).deliver
 
 		t = newTranslators[-1, 1][0]
 		lastTranslator.amara_id = t
