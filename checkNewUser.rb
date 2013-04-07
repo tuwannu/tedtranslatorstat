@@ -5,7 +5,7 @@ require 'mysql2'
 startTime = Time.new.getlocal("+07:00")
 
 scrape_languages = ['th', 'sv']#, 'nl']
-language_co_emails = ['removed@removed.com'], 'unnawut@unnawut.in.th']#, 'unnawut@unnawut.in.th']
+language_co_emails = ['removed@removed.com', 'unnawut@unnawut.in.th']#, 'unnawut@unnawut.in.th']
 
 log_text = "Script start executing at #{startTime}\n"
 
