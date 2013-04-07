@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+	<p>Please see the list below for the list of new translators for language: <%= @language %></p>
+	<ul>
+		<% @new_translators.each do |translator| %>
+		<li>
+			<a href="http://www.amara.org/en-gb/profiles/profile/<%= translator %>/"><%= translator %></a> - (<a href="http://www.amara.org/en-gb/messages/new/?user=<%= translator %>">send message</a>)
+		</li>
+		<% end %>
+	</ul>
+  </body>
+</html>

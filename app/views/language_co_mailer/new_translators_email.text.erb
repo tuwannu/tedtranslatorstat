@@ -1,0 +1,9 @@
+Please see the list below for the list of new translators for language: <%= @language %>
+
+<% 
+	i = 1
+	@new_translators.each do |translator| 
+		puts "#{i}. #{translator}: http://www.amara.org/en-gb/profiles/profile/#{translator}\n"
+		i += 1
+	end 
+%>
