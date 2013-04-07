@@ -4,17 +4,15 @@ Project by [Unnawut Leepaisalsuwanna](http://www.unnawut.in.th "Unnawut Leepaisa
 
 ## Current Features ##
 
-1. Scrape TED Translator statistics from TED.com on daily basis (currently only Thai translators to avoid overloading TED.com)
-    1. List of translators at each day
-    1. Number of completed translations/reviews of each translator in each day
+1. Scrape TED Translator statistics from TED.com on daily basis (currently only Thai, Swedish, Dutch translators to avoid overloading TED.com)
+    1. # of completed tasks (translations + reviews) across time.
+    1. # of new translators in the past 2 weeks.
+    1. # of active translators (translators that completed a task) in the past 2 weeks.
+    1. # of newly completed tasks in the past 2 weeks.
+    1. Total translators so far.
+    1. Total completed tasks so far.
 
-## Target Features ##
-
-1. Total translations over time - all translators
-1. Total translations over time - by each translator
-1. New translations this week
-1. Number of translators over time
-1. New translators this week
+2. Scrape last translators joined. Send email to LCs when a new translator joined for each LC's responsible language. Enabled per request.
 
 ## Suggest new features ##
 
