@@ -11,6 +11,7 @@ language_coordinators = [
 	{ :language => 'Dutch', :code => 'nl', :emails => 'removed@removed.com' },
 	{ :language => 'Russian', :code => 'ru', :emails => 'removed@removed.com' },
 	{ :language => 'Latvian', :code => 'lv', :emails => 'removed@removed.com' },
+	{ :language => 'Japanese', :code => 'ja', :emails => 'removed@removed.com' },
 #	{ :language => '', :code => '', :emails => '' },
 ]
 
