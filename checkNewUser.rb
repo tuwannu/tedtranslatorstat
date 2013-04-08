@@ -18,12 +18,12 @@ language_coordinators = [
 log_text = "Script start executing at #{startTime}\n"
 
 language_coordinators.each do |lc|
-	log_text << "#{Time.new.getlocal("+07:00")}: Start scraping for language: #{lc.language}\n"
+	log_text << "#{Time.new.getlocal("+07:00")}: Start scraping for language: #{lc[:language]}\n"
 
-	lastTranslator = LastTranslator.find_by_for_language(lc.code)
+	lastTranslator = LastTranslator.find_by_for_language(lc[:code])
 
 	if !lastTranslator then
-		log_text << "#{Time.new.getlocal("+07:00")}: Record for #{lc.language} not found. Skipping this language.\n"
+		log_text << "#{Time.new.getlocal("+07:00")}: Record for #{lc[:language]} not found. Skipping this language.\n"
 		next
 	end
 
@@ -34,7 +34,7 @@ language_coordinators.each do |lc|
 	newTranslators = []
 
 	until lastPage do
-		url = "http://www.amara.org/en-gb/teams/ted/members/?lang=#{lc.code}&page=#{page}"
+		url = "http://www.amara.org/en-gb/teams/ted/members/?lang=#{lc[:code]}&page=#{page}"
 
 		begin
 			log_text << "#{Time.new.getlocal("+07:00")}: Fetching: #{url}\n"
@@ -74,11 +74,11 @@ language_coordinators.each do |lc|
 
 	end
 
-	log_text << "#{Time.new.getlocal("+07:00")}: Found #{newTranslators.length} new #{lc.language} translators\n"
+	log_text << "#{Time.new.getlocal("+07:00")}: Found #{newTranslators.length} new #{lc[:language]} translators\n"
 
 	if newTranslators.length > 0 then
-		log_text << "Sending email to #{lc.emails} for language #{lc.language}.\n"
-		LanguageCoMailer.new_translators_email(lc.code, lc.language, lc.emails, newTranslators).deliver
+		log_text << "Sending email to #{lc[:emails]} for language #{lc[:language]}.\n"
+		LanguageCoMailer.new_translators_email(lc[:code], lc[:language], lc[:emails], newTranslators).deliver
 
 		t = newTranslators[-1, 1][0]
 		lastTranslator.amara_id = t
@@ -87,7 +87,7 @@ language_coordinators.each do |lc|
 
 		lastTranslator.save
 
-		log_text << "#{Time.new.getlocal("+07:00")}: Last translator for #{lc.language} is now: #{lastTranslator.amara_id} on page #{lastTranslator.last_page}\n"
+		log_text << "#{Time.new.getlocal("+07:00")}: Last translator for #{lc[:language]} is now: #{lastTranslator.amara_id} on page #{lastTranslator.last_page}\n"
 	end
 
 	sleep 2
