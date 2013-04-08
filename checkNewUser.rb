@@ -3,19 +3,26 @@ require 'nokogiri'
 
 startTime = Time.new.getlocal("+07:00")
 
-scrape_languages = ['th', 'pl', 'fr', 'ur', 'nl', 'ru', 'lv']
-language_co_emails = ['removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com', 'removed@removed.com']
-language_name = ['Thai', 'Polish', 'French', 'Urdu', 'Dutch', 'Russian', 'Latvian']
+language_coordinators = [
+	{ :language => 'Thai', :code => 'th', :emails => 'removed@removed.com' },
+	{ :language => 'Polish', :code => 'pl', :emails => 'removed@removed.com' },
+	{ :language => 'French', :code => 'fr', :emails => 'removed@removed.com' },
+	{ :language => 'Urdu', :code => 'ur', :emails => 'removed@removed.com' },
+	{ :language => 'Dutch', :code => 'nl', :emails => 'removed@removed.com' },
+	{ :language => 'Russian', :code => 'ru', :emails => 'removed@removed.com' },
+	{ :language => 'Latvian', :code => 'lv', :emails => 'removed@removed.com' },
+#	{ :language => '', :code => '', :emails => '' },
+]
 
 log_text = "Script start executing at #{startTime}\n"
 
-scrape_languages.each do |scrape_language|
-	log_text << "#{Time.new.getlocal("+07:00")}: Start scraping for language: #{scrape_language}\n"
+language_coordinators.each do |lc|
+	log_text << "#{Time.new.getlocal("+07:00")}: Start scraping for language: #{lc.language}\n"
 
-	lastTranslator = LastTranslator.find_by_for_language(scrape_language)
+	lastTranslator = LastTranslator.find_by_for_language(lc.code)
 
 	if !lastTranslator then
-		log_text << "#{Time.new.getlocal("+07:00")}: Record for #{scrape_language} not found. Skipping this language.\n"
+		log_text << "#{Time.new.getlocal("+07:00")}: Record for #{lc.language} not found. Skipping this language.\n"
 		next
 	end
 
@@ -26,7 +33,7 @@ scrape_languages.each do |scrape_language|
 	newTranslators = []
 
 	until lastPage do
-		url = "http://www.amara.org/en-gb/teams/ted/members/?lang=#{scrape_language}&page=#{page}"
+		url = "http://www.amara.org/en-gb/teams/ted/members/?lang=#{lc.code}&page=#{page}"
 
 		begin
 			log_text << "#{Time.new.getlocal("+07:00")}: Fetching: #{url}\n"
@@ -66,11 +73,11 @@ scrape_languages.each do |scrape_language|
 
 	end
 
-	log_text << "#{Time.new.getlocal("+07:00")}: Found #{newTranslators.length} new #{scrape_language} translators\n"
+	log_text << "#{Time.new.getlocal("+07:00")}: Found #{newTranslators.length} new #{lc.language} translators\n"
 
 	if newTranslators.length > 0 then
-		log_text << "Sending email to #{language_co_emails[scrape_languages.index(scrape_language)]} for language #{scrape_language}.\n"
-		LanguageCoMailer.new_translators_email(scrape_language, language_co_emails[scrape_languages.index(scrape_language)], newTranslators).deliver
+		log_text << "Sending email to #{lc.emails} for language #{lc.language}.\n"
+		LanguageCoMailer.new_translators_email(lc.code, lc.language, lc.emails, newTranslators).deliver
 
 		t = newTranslators[-1, 1][0]
 		lastTranslator.amara_id = t
@@ -79,14 +86,14 @@ scrape_languages.each do |scrape_language|
 
 		lastTranslator.save
 
-		log_text << "#{Time.new.getlocal("+07:00")}: Last translator is now: #{lastTranslator.amara_id} on page #{lastTranslator.last_page}\n"
+		log_text << "#{Time.new.getlocal("+07:00")}: Last translator for #{lc.language} is now: #{lastTranslator.amara_id} on page #{lastTranslator.last_page}\n"
 	end
 
 	sleep 2
 
 end
 
-log_text << "#{Time.new.getlocal("+07:00")}: Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
+log_text << "#{Time.new.getlocal("+07:00")}: Check new user completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
 
 begin
 	File.open(ENV['OPENSHIFT_REPO_DIR'] + "custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }	
