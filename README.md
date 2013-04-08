@@ -17,3 +17,11 @@ Project by [Unnawut Leepaisalsuwanna](http://www.unnawut.in.th "Unnawut Leepaisa
 ## Suggest new features ##
 
 Please e-mail me at "unnawut [at] unnawut.in.th"
+
+## Installation ##
+
+Please setup the following environment variables in your development environment. These variables are used by config/database.yml
+
+1. TEDTRANSLATORSTAT_DB_NAME
+2. TEDTRANSLATORSTAT_DB_USERNAME
+3. TEDTRANSLATORSTAT_DB_PASSWORD
