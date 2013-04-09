@@ -30,8 +30,6 @@ LastTranslator.all.each do |lastTranslator|
 		begin
 			log_text << "#{Time.new.getlocal("+07:00")}: Fetching: #{url}\n"
 			rawhtml = open(URI.encode(url))
-
-			log_text << "#{Time.new.getlocal("+07:00")}: Fetching completed.\n"
 		rescue
 			log_text << "#{Time.new.getlocal("+07:00")}: Error while retrieving from #{url}\n"
 			lastPage = true
@@ -65,7 +63,7 @@ LastTranslator.all.each do |lastTranslator|
 	log_text << "#{Time.new.getlocal("+07:00")}: Found #{newTranslators.length} new #{language} translators\n"
 
 	if newTranslators.length > 0 then
-		log_text << "Sending email to #{language} LCs (#{lcEmails}).\n"
+		log_text << "#{Time.new.getlocal("+07:00")}: Sending email to #{language} LCs (#{lcEmails}).\n"
 		LanguageCoMailer.new_translators_email(languageCode, language, lcEmails, newTranslators).deliver
 
 		t = newTranslators[-1, 1][0]
@@ -78,6 +76,8 @@ LastTranslator.all.each do |lastTranslator|
 		log_text << "#{Time.new.getlocal("+07:00")}: Latest translator for #{language} is now: #{lastTranslator.amara_id} on page #{lastTranslator.last_page}\n"
 	end
 
+	log_text << "#{Time.new.getlocal("+07:00")}: -----------------------------------\n"
+
 	sleep 2
 
 end
@@ -85,7 +85,11 @@ end
 log_text << "#{Time.new.getlocal("+07:00")}: Check new user completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
 
 begin
-	File.open("./custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }	
+	if Rails.env.production then
+		File.open("#{ENV['OPENSHIFT_DATA_DIR']}custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }
+	else
+		File.open("./custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }
+	end	
 rescue
 	puts "Error logging to file."
 end
