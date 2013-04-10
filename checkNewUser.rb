@@ -7,6 +7,11 @@ log_text = "Script start executing at #{startTime}\n"
 
 LastTranslator.all.each do |lastTranslator|
 
+	if lastTranslator.disabled?
+		log_text << "#{Time.new.getlocal("+07:00")}: Skipping language: #{language}\n"
+		next
+	end
+
 	language = lastTranslator.language
 	languageCode = lastTranslator.code
 	lcEmails = lastTranslator.lc_emails
