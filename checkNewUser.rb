@@ -86,7 +86,7 @@ end
 log_text << "#{Time.new.getlocal("+07:00")}: Check new user completed in #{Time.new.getlocal("+07:00")-startTime} seconds.\n"
 
 begin
-	if Rails.env.production then
+	if Rails.env.production?
 		File.open("#{ENV['OPENSHIFT_DATA_DIR']}custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }
 	else
 		File.open("./custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }
@@ -96,4 +96,5 @@ rescue => errorDetails
 	puts "#{errorDetails.message}\n"
 	puts "Error Backtrace:\n"
 	puts errorDetails.backtrace.join("\n") + '\n'
+	puts "Trying to log: \n" + log_text
 end
