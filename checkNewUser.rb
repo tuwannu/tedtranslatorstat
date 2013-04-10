@@ -7,14 +7,14 @@ log_text = "Script start executing at #{startTime}\n"
 
 LastTranslator.all.each do |lastTranslator|
 
+	language = lastTranslator.language
+	languageCode = lastTranslator.code
+	lcEmails = lastTranslator.lc_emails
+
 	if lastTranslator.disabled?
 		log_text << "#{Time.new.getlocal("+07:00")}: Skipping language: #{language}\n"
 		next
 	end
-
-	language = lastTranslator.language
-	languageCode = lastTranslator.code
-	lcEmails = lastTranslator.lc_emails
 
 	log_text << "#{Time.new.getlocal("+07:00")}: Start scraping for language: #{language}\n"
 
