@@ -1,5 +1,5 @@
 class LanguageCoMailer < ActionMailer::Base
-  default from: "unnawut@unnawut.in.th"
+  default from: ENV['TEDTRANSLATORSTAT_FROM_EMAIL']
 
   def new_translators_email(code, language, emails, new_translators)
   	@code = code
