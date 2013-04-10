@@ -70,7 +70,13 @@ LastTranslator.all.each do |lastTranslator|
 
 	if newTranslators.length > 0 then
 		log_text << "#{Time.new.getlocal("+07:00")}: Sending email to #{language} LCs (#{lcEmails}).\n"
-		LanguageCoMailer.new_translators_email(languageCode, language, lcEmails, newTranslators).deliver
+		
+		begin
+			LanguageCoMailer.new_translators_email(languageCode, language, lcEmails, newTranslators).deliver
+		rescue => errorDetails
+			log_text << "#{Time.new.getlocal("+07:00")}: Error sending email with message: \"#{errorDetails.message}\". Skipping this language. \n"
+			next
+		end
 
 		t = newTranslators[-1, 1][0]
 		lastTranslator.amara_id = t
