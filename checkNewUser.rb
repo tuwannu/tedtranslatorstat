@@ -44,10 +44,10 @@ LastTranslator.all.each do |lastTranslator|
 
 		doc = Nokogiri::HTML.parse(rawhtml)
 
-		if doc.css('div.pagination span.next_page.disabled').size > 0 then
-			lastPage = true
-		else
+		if doc.css('div.pagination span.next_page').size > 0 && doc.css('div.pagination span.next_page.disabled').size == 0 then
 			page += 1
+		else
+			lastPage = true
 		end
 
 		translatorsInPage = []
