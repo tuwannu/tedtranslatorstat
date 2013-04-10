@@ -30,8 +30,9 @@ LastTranslator.all.each do |lastTranslator|
 		begin
 			log_text << "#{Time.new.getlocal("+07:00")}: Fetching: #{url}\n"
 			rawhtml = open(URI.encode(url))
-		rescue
+		rescue => errorDetails
 			log_text << "#{Time.new.getlocal("+07:00")}: Error while retrieving from #{url}\n"
+			log_text << "#{Time.new.getlocal("+07:00")}: Error message: #{errorDetails.message}\n"
 			lastPage = true
 			next
 		end
@@ -90,6 +91,9 @@ begin
 	else
 		File.open("./custom_log/checkNewUser.rb.log", 'a') {|f| f.write(log_text) }
 	end	
-rescue
-	puts "Error logging to file."
+rescue => errorDetails
+	puts "Error logging to file with the following message:\n"
+	puts "#{errorDetails.message}\n"
+	puts "Error Backtrace:\n"
+	puts errorDetails.backtrace.join("\n") + '\n'
 end
