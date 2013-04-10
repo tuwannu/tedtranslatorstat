@@ -3,7 +3,7 @@ require 'nokogiri'
 
 startTime = Time.new.getlocal("+07:00")
 
-log_text = "Script start executing at #{startTime}\n"
+log_text = "\n####################\nCheck New User start executing at #{startTime}\n####################\n"
 
 LastTranslator.all.each do |lastTranslator|
 
