@@ -9,6 +9,7 @@ startTime = Time.new.getlocal("+07:00")
 $log_text = ""
 
 fetch_languages = ['th']
+slice_size = 15
 
 def post_log(message)
 	message = "#{Time.new.getlocal("+07:00")}: #{message}"
@@ -105,6 +106,8 @@ while (more_page == true && scraping_success != false)
 	else
 		page += 1
 		post_log "#{scrapedTalks.count} talks scraped."
+		# Sleep for 2 seconds before fetching next page
+		sleep 1
 	end
 
 end
@@ -118,43 +121,87 @@ if scraping_success == true
 
 		post_log "Fetching Facebook info for language: #{fetch_language}"
 
-		# Loop for each talk
-		scrapedTalks.each do |scrapedTalk|
+		# Slice into chunks, then loop for each chunks
+		scrapedTalks.each_slice(slice_size) do |scrapedTalksChunk|
+			fql_url = ""
 
-			title = scrapedTalk.title
+			# Prepare url for each chunk
+			scrapedTalksChunk.each do |scrapedTalk|
 
-			url = scrapedTalk.url
-			url["/talks"] = "/talks/lang/#{fetch_language}"
+				tedUrl = scrapedTalk.url.gsub("/talks", "/talks/lang/#{fetch_language}")
 
-			date_published = scrapedTalk.date_published
+				# if url is empty, prepare the beginning part of the FQL url
+				if tedUrl != "" && fql_url == ""
+					fql_url = "https://api.facebook.com/method/fql.query?query="
+					fql_url << "select url,total_count,like_count,comment_count,share_count,click_count from link_stat "
+					fql_url << "where url='http://www.ted.com#{tedUrl}'"
+				elsif tedUrl != "" && fql_url != ""
+					# if url is not empty, then just append an or clause to the url
+					fql_url << " or url='http://www.ted.com#{tedUrl}'"
+				end # end of preparing FQL url for one chunk
 
+			end # end of looping through all chunks
+
+			fql_url << "&format=json"
+
+			# Fetch Facebook info for the given talks batch
 			begin
-
-				facebook_info = JSON.parse(open(URI.encode("https://api.facebook.com/method/fql.query?query=select total_count,like_count,comment_count,share_count,click_count from link_stat where url='http://www.ted.com#{url}'&format=json")).read)
-
-				like_count = facebook_info[0]["like_count"]
-				comment_count = facebook_info[0]["comment_count"]
-				share_count = facebook_info[0]["share_count"]
-				total_count = facebook_info[0]["total_count"]
-
-				talks << Talk.new(title, fetch_language, url, date_published, like_count, comment_count, share_count, total_count)
-
-				if talks.count % 10 == 0
-					post_log "#{talks.count} Facebook records fetched."
-					sleep 1
-				end
-
+				facebook_info = nil
+				facebook_info = JSON.parse(open(URI.encode(fql_url)).read)
 			rescue => errorDetails
 				# Escaping in case Facebook returns unexpected response
-				post_log "Error occurred while fetching Facebook data for url: #{url}."
+				post_log "Error occurred while fetching Facebook data for url: #{fql_url}."
 				post_log "Error message: #{errorDetails.message}"
+			end #end fetching from Facebook FQL
+
+			# Check that result if returned from FQL,
+			# if so, process the FQL result
+			if facebook_info != nil
+
+				# Loop for each returned FQL record
+				facebook_info.each do |fb|
+
+					# Facebook FQL returns full URL, 
+					# trim the top domain so we can match with data we got from TED.com
+					url = fb["url"].gsub('http://www.ted.com', '')
+
+					# Match between Facebook FQL record and TED.com record
+					scraped_talk_index = scrapedTalksChunk.index { |talk| talk.url.gsub("/talks", "/talks/lang/#{fetch_language}") == url }
+
+					# if found matching url between FQL and TED.com,
+					# then gather information from FQL and TED.com into one piece,
+					# and put for storage
+					if scraped_talk_index != nil
+
+						# prepare Facebook result for storage
+						like_count = fb["like_count"]
+						comment_count = fb["comment_count"]
+						share_count = fb["share_count"]
+						total_count = fb["total_count"]
+
+						# prepare TED.com record for storage
+						title = scrapedTalksChunk[scraped_talk_index].title
+						date_published = scrapedTalksChunk[scraped_talk_index].date_published
+
+						talks << Talk.new(title, fetch_language, url, date_published, like_count, comment_count, share_count, total_count)
+					
+					end #end of merging and storing records from FQL and TED.com
+
+				end # end looping for each returned FQL record
+
+				post_log "#{talks.count} records fetched and merged."
+			end # end of processing FQL result
+
+			# If fetched FQL for 5 times, sleep for 2 seconds to give Facebook a break
+			if talks.count % (slice_size * 5) == 0
+				sleep 1
 			end
 
-		end
+		end #end of looping chunks
 
-	end
+	end #end loop for each language
 
-end
+end #end condition if scraping from TED.com is successful
 
 if talks.count > 0
 	post_log "#{talks.count} stats records will be added to database."
