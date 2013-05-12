@@ -248,13 +248,13 @@ if talks.count > 0
 	client.close()
 
 	post_log "#{insert_success_count} records inserted to DB."
-	post_log "----------------------------------\n"
 end
 
 post_log "Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds."
+post_log "----------------------------------\n"
 
 begin
-	File.open(ENV['OPENSHIFT_REPO_DIR'] + "custom_log/dailyExtractFacebookLikes.rb.log", 'a') {|f| f.write($log_text) }
+	File.open(ENV['OPENSHIFT_DATA_DIR'] + "custom_log/dailyExtractFacebookLikes.rb.log", 'a') {|f| f.write($log_text) }
 rescue
 	puts "Error logging to file.\n"
 	puts "---------- Dumping log_text ----------\n"
