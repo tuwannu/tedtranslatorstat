@@ -199,56 +199,58 @@ if scraping_success == true
 
 		end #end of looping chunks
 
+		# inset data into database once finished fetching all chunks
+		if talks.count > 0
+			post_log "#{talks.count} stats records will be added to database."
+
+			client = Mysql2::Client.new(
+				:host => ENV['OPENSHIFT_MYSQL_DB_HOST'], 
+				:username => ENV['OPENSHIFT_MYSQL_DB_USERNAME'], 
+				:password => ENV['OPENSHIFT_MYSQL_DB_PASSWORD'],
+				:database => "tedtranslatorstat"
+				)
+
+			insert_success_count = 0
+
+			talks.each do |t|
+
+				client.query("
+					INSERT INTO facebook_stats (
+						`title`, 
+						`language`, 
+						`url`, 
+						`date_published`, 
+						`like_count`, 
+						`comment_count`,
+						`share_count`,
+						`total_count`, 
+						`for_date` 
+					) VALUES (
+						'#{t.title.gsub("'", "\\\\'")}', 
+						'#{t.language}', 
+						'#{t.url}', 
+						'#{t.date_published}', 
+						'#{t.like_count}', 
+						'#{t.comment_count}',
+						'#{t.share_count}',
+						'#{t.total_count}',
+						NOW()
+					);
+				")
+
+				talks.delete(t)
+				insert_success_count += 1
+
+			end
+
+			client.close()
+
+			post_log "#{insert_success_count} records inserted to DB."
+		end
+
 	end #end loop for each language
 
 end #end condition if scraping from TED.com is successful
-
-if talks.count > 0
-	post_log "#{talks.count} stats records will be added to database."
-
-	client = Mysql2::Client.new(
-		:host => ENV['OPENSHIFT_MYSQL_DB_HOST'], 
-		:username => ENV['OPENSHIFT_MYSQL_DB_USERNAME'], 
-		:password => ENV['OPENSHIFT_MYSQL_DB_PASSWORD'],
-		:database => "tedtranslatorstat"
-		)
-
-	insert_success_count = 0
-
-	talks.each do |t|
-
-		client.query("
-			INSERT INTO facebook_stats (
-				`title`, 
-				`language`, 
-				`url`, 
-				`date_published`, 
-				`like_count`, 
-				`comment_count`,
-				`share_count`,
-				`total_count`, 
-				`for_date` 
-			) VALUES (
-				'#{t.title.gsub("'", "\\\\'")}', 
-				'#{t.language}', 
-				'#{t.url}', 
-				'#{t.date_published}', 
-				'#{t.like_count}', 
-				'#{t.comment_count}',
-				'#{t.share_count}',
-				'#{t.total_count}',
-				NOW()
-			);
-		")
-
-		insert_success_count += 1
-
-	end
-
-	client.close()
-
-	post_log "#{insert_success_count} records inserted to DB."
-end
 
 post_log "Daily extract completed in #{Time.new.getlocal("+07:00")-startTime} seconds."
 post_log "----------------------------------\n"
