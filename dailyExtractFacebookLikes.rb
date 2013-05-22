@@ -238,14 +238,14 @@ if scraping_success == true
 					);
 				")
 
-				talks.delete(t)
 				insert_success_count += 1
 
 			end
 
 			client.close()
+			talks.clear()
 
-			post_log "#{insert_success_count} records inserted to DB."
+			post_log "#{insert_success_count} of #{talks.count} records inserted to DB."
 		end
 
 	end #end loop for each language
