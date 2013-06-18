@@ -8,7 +8,7 @@ startTime = Time.new.getlocal("+07:00")
 
 $log_text = ""
 
-fetch_languages = ['th', 'de']
+fetch_languages = ['th', 'de', 'pl']
 slice_size = 15
 
 def post_log(message)
